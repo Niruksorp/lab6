@@ -5,6 +5,8 @@ import com.example.lab4.Service.CRUDJewel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController()
 @RequestMapping("/jewels/")
 public class ApplicationController {
@@ -16,12 +18,12 @@ public class ApplicationController {
     }
 
     @GetMapping("/all")
-    ResponseEntity getAllJewels() {
+    ResponseEntity<List<Jewel>> getAllJewels() {
         return ResponseEntity
                 .ok(crudJewel.findAll());
     }
     @GetMapping("/{brand}")
-    ResponseEntity getCustom(@PathVariable("brand") String brandName){
+    ResponseEntity<List<Jewel>> getCustom(@PathVariable("brand") String brandName){
         return ResponseEntity
                 .ok(crudJewel.findJewelsByBrandName(brandName));
     }
@@ -32,7 +34,7 @@ public class ApplicationController {
     }
 
     @PostMapping()
-    public ResponseEntity create(@RequestBody Jewel jewel) {
+    public ResponseEntity<Jewel> create(@RequestBody Jewel jewel) {
         return ResponseEntity
                 .ok(crudJewel.add(jewel));
     }
