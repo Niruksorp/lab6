@@ -1,8 +1,14 @@
 package com.example.lab4;
 
 import com.example.lab4.Entity.Jewel;
+import com.example.lab4.Entity.Role;
+import com.example.lab4.Entity.User;
+import com.example.lab4.Repository.UserRepo;
 import com.example.lab4.Service.CRUDJewel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.websocket.server.PathParam;
 import javax.xml.validation.Validator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Optional;
+
 @Controller
 public class OldApplicationController {
 
@@ -18,7 +27,33 @@ public class OldApplicationController {
     public OldApplicationController(CRUDJewel crudJewel) {
         this.crudJewel = crudJewel;
     }
+    @Autowired
+    private UserRepo usrRepo;
 
+    @GetMapping("/registration")
+    public String registration(Model model) {
+        User user = new User();
+        model.addAttribute(user);
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String addUser(@ModelAttribute("user") User user) {
+        Optional<User> usrFromDb = usrRepo.findByUsername(user.getUsername());
+
+        if (usrFromDb.isPresent()) {
+            return "registration";
+        }
+
+        user.setActive(true);
+        user.setRoles(Collections.singleton(Role.USER));
+        PasswordEncoder passwordEncoders = new BCryptPasswordEncoder();
+
+        user.setPassword(passwordEncoders.encode(user.getPassword()));
+        usrRepo.save(user);
+
+        return "redirect:/login";
+    }
     @GetMapping
     public String menu(){
         return "menu";
