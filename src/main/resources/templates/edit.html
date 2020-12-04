@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update person</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/obnovi}" th:object="${jewel}">
+    <label for="brandName">Enter brandName: </label>
+    <label for="cost">Enter cost: </label>
+    <label for="collection">Enter collection: </label>
+    <label for="warranty">Enter warranty: </label>
+    <input type="text" th:field="*{id}" id="some"/>
+    <input type="text" th:field="*{brandName}" id="brandName"/>
+    <input type="text" th:field="*{cost}" id="cost"/>
+    <input type="text" th:field="*{collection}" id="collection"/>
+    <input type="text" th:field="*{warranty}" id="warranty"/>
+    <br/>
+    <input type="submit" value="Update!"/>
+</form>
+
+</body>
+</html>
