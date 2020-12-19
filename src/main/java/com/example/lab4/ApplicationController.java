@@ -2,6 +2,7 @@ package com.example.lab4;
 
 import com.example.lab4.Entity.Jewel;
 import com.example.lab4.Service.CRUDJewel;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,12 +35,11 @@ public class ApplicationController {
     }
 
     @PostMapping()
-    public ResponseEntity<Jewel> create(@RequestBody Jewel jewel) {
-        return ResponseEntity
-                .ok(crudJewel.add(jewel));
+    public void create(@ModelAttribute("jewel") Jewel jewel) {
+        crudJewel.add(jewel);
     }
 
-    @PutMapping()
+    @PostMapping("/update/")
     public void update(@RequestBody Jewel jewel) {
         crudJewel.update(jewel);
     }
